@@ -122,20 +122,6 @@
                 })
             });
 
-            // Crea el mapa (Solo uno)
-            var map = new ol.Map({
-                target: 'map',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM() // Capa base del mapa
-                    }),
-                    geojsonLayer // Agrega la capa con los datos
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat([-58.59, -34.60]), // Centra el mapa
-                    zoom: 14
-                })
-            });
 
             // Evento para filtrar polígonos
             document.getElementById("PP").addEventListener("change", function() {
