@@ -73,29 +73,21 @@
 </select>
 
 <script>
-    var geojsonLayer;
-    map.eachLayer(function (layer) {
-        if (layer instanceof L.GeoJSON) {
-            geojsonLayer = layer;
-        }
-    });
-
-    var originalData = JSON.parse(JSON.stringify(geojsonLayer.toGeoJSON()));
-
     document.getElementById("categoryFilter").addEventListener("change", function() {
-        var selectedCategory = this.value;
-        geojsonLayer.clearLayers();
-        
-        var filteredData = (selectedCategory === "all") ? originalData : {
-            type: "FeatureCollection",
-            features: originalData.features.filter(feature => feature.properties["Filtro 1"] == selectedCategory)
-        };
+        let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
-        geojsonLayer.addData(filteredData);
+        geojsonLayer.eachLayer(function(layer) {
+            let feature = layer.feature;
+            let category = feature.properties["Filtro 1"]; // Obtiene el valor del filtro
+
+            if (selectedCategory === "all" || category === selectedCategory) {
+                layer.addTo(map); // Muestra la capa si coincide
+            } else {
+                map.removeLayer(layer); // Oculta la capa si no coincide
+            }
+        });
     });
 </script>
-
-    
     
     
     
