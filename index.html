@@ -67,26 +67,26 @@
 <select id="PP">
     <option value="all">Filtro 1</option>
     <option value="Lola Mora">Lola Moraaa</option>
-    <option value="2">Categoría 2</option>
-    <option value="3">Categoría 3</option>
-    <option value="4">Categoría 4</option>
+    <option value="1">Categoría 2</option>
+    <option value="2">Categoría 3</option>
+    <option value="3">Categoría 4</option>
 </select>
 
 <script>
-    document.getElementById("PP").addEventListener("change", function() {
-        let selectedCategory = this.value; // Obtiene la categoría seleccionada
+document.getElementById("PP").addEventListener("change", function() {
+    let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
-        geojsonLayer.eachLayer(function(layer) {
-            let feature = layer.feature;
-           let category = feature.properties["Espacio_1"] ? feature.properties["Nombre"].trim() : ""; // Obtiene el valor del filtro
+    geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
+        let category = feature.get("Filtro 1") ? feature.get("Filtro 1").trim() : ""; // Obtiene el valor del filtro
 
-            if (selectedCategory === "all" || category === selectedCategory) {
-                layer.addTo(map); // Muestra la capa si coincide
-            } else {
-                map.removeLayer(layer); // Oculta la capa si no coincide
-            }
-        });
+        if (selectedCategory === "all" || category === selectedCategory) {
+            feature.setStyle(null); // Muestra la capa si coincide
+        } else {
+            feature.setStyle(new ol.style.Style({ visibility: "hidden" })); // Oculta la capa
+        }
     });
+});
+
 </script>
     
     
