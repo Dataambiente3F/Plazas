@@ -64,7 +64,7 @@
     
     
     
-<select id="3">
+<select id="PP">
     <option value="all">Filtro 1</option>
     <option value="1">Categoría 1</option>
     <option value="2">Categoría 2</option>
@@ -73,7 +73,7 @@
 </select>
 
 <script>
-    document.getElementById("3").addEventListener("change", function() {
+    document.getElementById("PP").addEventListener("change", function() {
         let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
         geojsonLayer.eachLayer(function(layer) {
