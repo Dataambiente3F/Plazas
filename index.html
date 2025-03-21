@@ -66,7 +66,7 @@
     
 <select id="PP">
     <option value="all">Filtro 1</option>
-    <option value="Lola Mora">Lola Mor</option>
+    <option value="Lola Mora">Lola Moraa</option>
     <option value="2">Categoría 2</option>
     <option value="3">Categoría 3</option>
     <option value="4">Categoría 4</option>
@@ -76,7 +76,7 @@
     document.getElementById("PP").addEventListener("change", function() {
         let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
-        geojsonLayer.eachLayer(function(Espacio_1) {
+        geojsonLayer.eachLayer(function(Espacio) {
             let feature = layer.feature;
            let category = feature.properties["Nombre"] ? feature.properties["Nombre"].trim() : ""; // Obtiene el valor del filtro
 
