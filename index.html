@@ -78,7 +78,7 @@
 
         geojsonLayer.eachLayer(function(layer) {
             let feature = layer.feature;
-            let category = feature.properties["Filtro 1"]; // Obtiene el valor del filtro
+           let category = feature.properties["Filtro 1"] ? feature.properties["Filtro 1"].trim() : ""; // Obtiene el valor del filtro
 
             if (selectedCategory === "all" || category === selectedCategory) {
                 layer.addTo(map); // Muestra la capa si coincide
