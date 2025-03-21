@@ -83,8 +83,9 @@
 </head>
 <body>
 
+    <h3>Filtrar polígonos</h3>
     <select id="PP">
-        <option value="all">Seleccionar todo</option>
+        <option value="all">Seleccionar todos</option>
         <option value="1">Seleccionar 1</option>
         <option value="2">Seleccionar 2</option>
     </select>
@@ -95,22 +96,8 @@
     <script src="layers/Espacio_1.js"></script>
 
     <script>
-        // Crea el mapa antes de definir geojsonLayer
-        var map = new ol.Map({
-            target: 'map',
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.OSM() // Capa base del mapa
-                })
-            ],
-            view: new ol.View({
-                center: ol.proj.fromLonLat([-58.59, -34.60]), // Centra el mapa
-                zoom: 14
-            })
-        });
-
-        // Espera a que se cargue el JSON antes de crear la capa
         document.addEventListener("DOMContentLoaded", function() {
+            // Verifica si el archivo GeoJSON se cargó correctamente
             if (typeof json_Espacio_1 === "undefined") {
                 console.error("El archivo Espacio_1.js no se ha cargado o json_Espacio_1 no está definido.");
                 return;
@@ -135,8 +122,20 @@
                 })
             });
 
-            // Agrega la capa al mapa
-            map.addLayer(geojsonLayer);
+            // Crea el mapa (Solo uno)
+            var map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM() // Capa base del mapa
+                    }),
+                    geojsonLayer // Agrega la capa con los datos
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([-58.59, -34.60]), // Centra el mapa
+                    zoom: 14
+                })
+            });
 
             // Evento para filtrar polígonos
             document.getElementById("PP").addEventListener("change", function() {
@@ -162,7 +161,6 @@
 
 </body>
 </html>
-
 
 
 
