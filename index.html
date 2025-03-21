@@ -66,36 +66,44 @@
     
 
 <select id="PP">
-    <option value="all">Seleccionar todos 10</option>
+    <option value="all">Seleccionar todos</option>
     <option value="1">Seleccionar 1</option>
     <option value="2">Seleccionar 2</option>
-    <option value="3">Seleccionar 3</option>
-    <option value="4">Seleccionar 4</option>
 </select>
 
 <script src="layers/Espacio_1.js"></script>
 
 <script>
-document.getElementById("PP").addEventListener("change", function() {
-    let selectedCategory = this.value; // Obtiene la categoría seleccionada
+document.addEventListener("DOMContentLoaded", function() {
+    // Verifica que geojsonLayer está bien definido
+    if (typeof geojsonLayer === "undefined") {
+        console.error("geojsonLayer no está definido. Asegúrate de agregarlo al mapa.");
+        return;
+    }
 
-    geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
-        let category = feature.get('Filtro 1') || feature.get('Filtro_1'); // Reemplaza "categoria" por el nombre real del atributo
+    document.getElementById("PP").addEventListener("change", function() {
+        let selectedCategory = this.value;
+        console.log("Categoría seleccionada:", selectedCategory);
 
-        if (!category) category = ""; // Maneja valores nulos o indefinidos
+        geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
+            let category = feature.get("Filtro 1") || feature.get("Filtro_1");
+            console.log("Categoría de la feature:", category);
 
-        if (selectedCategory === "all" || category === selectedCategory) {
-            feature.setStyle(null); // Muestra la capa si coincide
-        } else {
-            feature.setStyle(new ol.style.Style({ // Oculta la capa aplicando un estilo invisible
-                display: "none" // OpenLayers no soporta esto, pero sí una simbología transparente
-            }));
-        }
+            if (!category) category = ""; // Maneja valores nulos
+
+            if (selectedCategory === "all" || category == selectedCategory) {
+                feature.setStyle(null); // Muestra la feature
+            } else {
+                feature.setStyle(new ol.style.Style({ // Oculta la feature con un estilo invisible
+                    fill: new ol.style.Fill({ color: "rgba(0, 0, 0, 0)" }),
+                    stroke: new ol.style.Stroke({ color: "rgba(0, 0, 0, 0)" })
+                }));
+            }
+        });
     });
 });
 </script>
-    
-    
+
     
     
     
