@@ -80,7 +80,7 @@ document.getElementById("PP").addEventListener("change", function() {
     let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
     geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
-        let category = feature.get("categoria"); // Reemplaza "categoria" por el nombre real del atributo
+        let category = feature.get("Filtro 1"); // Reemplaza "categoria" por el nombre real del atributo
 
         if (!category) category = ""; // Maneja valores nulos o indefinidos
 
