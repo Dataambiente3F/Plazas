@@ -60,34 +60,7 @@
         <script src="./resources/qgis2web.js"></script>
     
     
-    
-    
-    <select id="categoryFilter">
-    <option value="all">Todas las categorías</option>
-    <option value="1">Categoría 1</option>
-    <option value="2">Categoría 2</option>
-    <option value="3">Categoría 3</option>
-    <option value="4">Categoría 4</option>
-</select>
 
-<script>
-    var geojsonLayer = map._layers[Object.keys(map._layers)[1]]; // Capa de qgis2web
-    var originalData = JSON.parse(JSON.stringify(geojsonLayer.toGeoJSON())); // Copia de datos originales
-
-    document.getElementById("categoryFilter").addEventListener("change", function() {
-        var selectedCategory = this.value;
-        geojsonLayer.clearLayers();
-        
-        var filteredData = (selectedCategory === "all") ? originalData : {
-            type: "FeatureCollection",
-            features: originalData.features.filter(feature => feature.properties["Filtro 1"] == selectedCategory)
-        };
-
-        geojsonLayer.addData(filteredData);
-    });
-</script>
-
-        
     
     
     
