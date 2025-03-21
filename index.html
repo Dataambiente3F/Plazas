@@ -64,7 +64,9 @@
     
     
     
+
 <select id="PP">
+<script src="layers/Espacio_1.js"></script>
     <option value="all">Seleccionar todos</option>
     <option value="1">Seleccionar 1</option>
     <option value="2">Seleccionar 2</option>
@@ -77,7 +79,7 @@ document.getElementById("PP").addEventListener("change", function() {
     let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
     geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
-        let category = feature.get("Filtro 1") ? feature.get("Filtro 1").trim() : ""; // Obtiene el valor del filtro
+        let category = feature.get("Seleccionar todos") ? feature.get("Seleccionar todos").trim() : ""; // Obtiene el valor del filtro
 
         if (selectedCategory === "all" || category === selectedCategory) {
             feature.setStyle(null); // Muestra la capa si coincide
