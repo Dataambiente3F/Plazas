@@ -62,49 +62,111 @@
     
     
     
+
+        
     
-    
 
-<select id="PP">
-    <option value="all">Seleccionar todos</option>
-    <option value="1">Seleccionar 1</option>
-    <option value="2">Seleccionar 2</option>
-</select>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa QGIS con OpenLayers</title>
+    <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.css">
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
 
-<script src="layers/Espacio_1.js"></script>
+    <select id="PP">
+        <option value="all">Seleccionar todos</option>
+        <option value="1">Seleccionar 1</option>
+        <option value="2">Seleccionar 2</option>
+    </select>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Verifica que geojsonLayer está bien definido
-    if (typeof geojsonLayer === "undefined") {
-        console.error("geojsonLayer no está definido. Asegúrate de agregarlo al mapa.");
-        return;
-    }
+    <div id="map"></div>
 
-    document.getElementById("PP").addEventListener("change", function() {
-        let selectedCategory = this.value;
-        console.log("Categoría seleccionada:", selectedCategory);
+    <!-- Carga el archivo de datos (debe definir json_Espacio_1) -->
+    <script src="layers/Espacio_1.js"></script>
 
-        geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
-            let category = feature.get("Filtro 1") || feature.get("Filtro_1");
-            console.log("Categoría de la feature:", category);
-
-            if (!category) category = ""; // Maneja valores nulos
-
-            if (selectedCategory === "all" || category == selectedCategory) {
-                feature.setStyle(null); // Muestra la feature
-            } else {
-                feature.setStyle(new ol.style.Style({ // Oculta la feature con un estilo invisible
-                    fill: new ol.style.Fill({ color: "rgba(0, 0, 0, 0)" }),
-                    stroke: new ol.style.Stroke({ color: "rgba(0, 0, 0, 0)" })
-                }));
-            }
+    <script>
+        // Crea el mapa antes de definir geojsonLayer
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM() // Capa base del mapa
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([-58.59, -34.60]), // Centra el mapa
+                zoom: 14
+            })
         });
-    });
-});
-</script>
 
-    
+        // Espera a que se cargue el JSON antes de crear la capa
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof json_Espacio_1 === "undefined") {
+                console.error("El archivo Espacio_1.js no se ha cargado o json_Espacio_1 no está definido.");
+                return;
+            }
+
+            // Crea la capa GeoJSON
+            var geojsonLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: new ol.format.GeoJSON().readFeatures(json_Espacio_1, {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    })
+                }),
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.6)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#0000ff',
+                        width: 2
+                    })
+                })
+            });
+
+            // Agrega la capa al mapa
+            map.addLayer(geojsonLayer);
+
+            // Evento para filtrar polígonos
+            document.getElementById("PP").addEventListener("change", function() {
+                let selectedCategory = this.value;
+
+                geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
+                    let category = feature.get("Filtro 1") || feature.get("Filtro_1");
+
+                    if (!category) category = ""; // Maneja valores nulos
+
+                    if (selectedCategory === "all" || category == selectedCategory) {
+                        feature.setStyle(null); // Muestra la feature
+                    } else {
+                        feature.setStyle(new ol.style.Style({ // Oculta la feature
+                            fill: new ol.style.Fill({ color: "rgba(0, 0, 0, 0)" }),
+                            stroke: new ol.style.Stroke({ color: "rgba(0, 0, 0, 0)" })
+                        }));
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
     
     
     
