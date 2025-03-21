@@ -66,7 +66,7 @@
     
 <select id="PP">
     <option value="all">Filtro 1</option>
-    <option value="Lola Mora">Lola Moraa</option>
+    <option value="Lola Mora">Lola Moraaa</option>
     <option value="2">Categoría 2</option>
     <option value="3">Categoría 3</option>
     <option value="4">Categoría 4</option>
@@ -76,9 +76,9 @@
     document.getElementById("PP").addEventListener("change", function() {
         let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
-        geojsonLayer.eachLayer(function(Espacio) {
+        geojsonLayer.eachLayer(function(layer) {
             let feature = layer.feature;
-           let category = feature.properties["Nombre"] ? feature.properties["Nombre"].trim() : ""; // Obtiene el valor del filtro
+           let category = feature.properties["Espacio_1"] ? feature.properties["Nombre"].trim() : ""; // Obtiene el valor del filtro
 
             if (selectedCategory === "all" || category === selectedCategory) {
                 layer.addTo(map); // Muestra la capa si coincide
