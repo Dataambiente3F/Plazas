@@ -66,7 +66,6 @@
     
 
 <select id="PP">
-<script src="layers/Espacio_1.js"></script>
     <option value="all">Seleccionar todos</option>
     <option value="1">Seleccionar 1</option>
     <option value="2">Seleccionar 2</option>
@@ -74,21 +73,26 @@
     <option value="4">Seleccionar 4</option>
 </select>
 
+<script src="layers/Espacio_1.js"></script>
+
 <script>
 document.getElementById("PP").addEventListener("change", function() {
     let selectedCategory = this.value; // Obtiene la categoría seleccionada
 
     geojsonLayer.getSource().getFeatures().forEach(function(feature) { 
-        let category = feature.get("Seleccionar todos") ? feature.get("Seleccionar todos").trim() : ""; // Obtiene el valor del filtro
+        let category = feature.get("categoria"); // Reemplaza "categoria" por el nombre real del atributo
+
+        if (!category) category = ""; // Maneja valores nulos o indefinidos
 
         if (selectedCategory === "all" || category === selectedCategory) {
             feature.setStyle(null); // Muestra la capa si coincide
         } else {
-            feature.setStyle(new ol.style.Style({ visibility: "hidden" })); // Oculta la capa
+            feature.setStyle(new ol.style.Style({ // Oculta la capa aplicando un estilo invisible
+                display: "none" // OpenLayers no soporta esto, pero sí una simbología transparente
+            }));
         }
     });
 });
-
 </script>
     
     
